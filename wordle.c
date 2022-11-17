@@ -35,23 +35,6 @@ struct Node *removeNode(struct List *list, struct Node *cur, struct Node *last)
 	return next;
 }
 
-void alphaInverse(char *in)
-{
-	printf("starting string: %s\n", in);
-	char temp[27];
-	strcpy(temp, in);
-	in[0] = '\0';
-	char temp2[2];
-	temp2[1] = '\0';
-	for(int i='a'; i<='z'; i++) {
-		if(!strchr(temp, i)) {
-			temp2[0] = i;
-			strncat(in, temp2, 1);
-		}
-	}
-	printf("output string: %s\n", in);
-}
-
 void pruneList(struct List *list, int val, char chr, int pos) 
 {
 	struct Node *cur = list->head;
@@ -129,34 +112,6 @@ void getGuess(struct List *list, char *guess, char *guessed) {
 
 	int numLocked = 0;
 	for(int i=0;i<5;i++) numLocked += locked[i];
-	
-
-	char remaining[27];
-	if((numLocked >= 4 && getLen(list) >= 8) || (numLocked == 3 && getLen(list) >= 15)) {
-		printf("switching tacts\n");
-		elim = 1;
-		struct Node *cur = list->head;
-		while(cur) {
-			countNewChars(cur->data, remaining, locked, 1);
-			cur = cur->next;
-		}
-		alphaInverse(remaining);
-
-		guessed = remaining;
-
-		list = &ogList;	
-
-
-		// TODO:
-		// Make guessed actually contain letters to be eliminated 
-		// 	Look through current list and add each element not in a locked spot to a char
-		// 	No duplicates
-		// feed it new list with everything
-		// 	Save the starting list
-		// 	feed this into list
-		// 	reset to original list at the end
-		// 	Don't delete an item from total list, but do strcpy
-	} 
 	
 	struct Node *cur = list->head;
 	struct Node *last = NULL;
@@ -253,7 +208,7 @@ int main()
 		for(int i=2; i>=0; i--) {
 			for(int j=0; guess[j]; j++) {
 				if(values[j] == i) {
-					printf("evaling the %d position with val = %d\n", j, i);
+					// printf("evaling the %d position with val = %d\n", j, i);
 					pruneList(&list, values[j], guess[j], j);
 				}
 			}
